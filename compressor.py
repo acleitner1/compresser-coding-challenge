@@ -4,6 +4,11 @@ import sys, os
 
 #Todo: 
 # 1. Build binary tree 
+# -> Define leaf objects AND also a root that points to the first two leaves
+#-> -> Each leaf object should contain a letter and its frequency, and right adn left children 
+#->-> Put the leaf objects into a PQ organized by frequency 
+#->-> remove the two trees with the lowest weights 
+#->-> create a new tree (weight sum of children) with those two trees as children and continue until all trees have been combined into one 
 # 2. Generate prefix codes based on binary tree 
 # 3. Header section for output file
 # 4. Encode text using code table and write it to output file 
