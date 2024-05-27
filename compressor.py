@@ -32,7 +32,8 @@ def main(input):
    f.close()
    #build priority queue
    tree_list = build_tree_list(character_map)
-   build_binary_tree(tree_list)
+   tree_tree = build_binary_tree(tree_list)
+   print(tree_tree.weight)
 
 class letterNode: 
    def __init__(self, character, frequency, isLeaf, leftChild, rightChild):
@@ -66,6 +67,8 @@ class letterNode:
 class letterTree(): 
    def __init__(self, element, weight, leaf, left, right): 
       self.root = letterNode(element, weight, leaf, left, right)
+      self.weight = weight
+      self.element = element
 
    def giveWeight(self): 
       return self.weight
@@ -77,9 +80,14 @@ class letterTree():
          return 0
       return 1
 
-class PrioirityQueue(): 
+class PriorityQueue(): 
    def __init__(self): 
       self.queue = []
+
+   def __iter__(self): 
+      yield len(self.queue)
+      for x in self.queue: 
+         yield x 
 
    def isEmpty(self): 
       if len(self.queue) != 0: 
@@ -93,7 +101,7 @@ class PrioirityQueue():
       #index of max_val
       max_val = 0
       for i in range(len(self.queue)): 
-         if self.queue[i] > self.queue[max_val].frequency: 
+         if self.queue[i].weight > self.queue[max_val].weight:
             max_val = i 
       item = self.queue[max_val]
       del self.queue[max_val]
@@ -103,19 +111,20 @@ class PrioirityQueue():
       return len(self.queue)              
 
 def build_tree_list(character_map): 
-   tree_list = PrioirityQueue()
+   tree_list = PriorityQueue()
    while (len(character_map) > 0): 
       pair = character_map.popitem()
       tree1 = letterTree(pair[0], pair[1], True, None, None)
       tree_list.insert(tree1)
    return tree_list
 
-def build_binary_tree(leaf_list): 
-   return
-   # root = leaf("", 0, True, False)
-   # while(leaf_list.size() > 1): 
-   #    leaf1 = leaf_list.delete()
-   #    leaf2 = leaf_list.delete()
-   #    leaf3 = leaf()
+def build_binary_tree(tree_list): 
+   tree3 = None
+   while(tree_list.size() > 1): 
+      tree1 = tree_list.delete()
+      tree2 = tree_list.delete()
+      tree3 = letterTree("", tree1.weight+tree2.weight, False, tree1, tree2)
+      tree_list.insert(tree3)
+   return tree3
       
 main(sys)
