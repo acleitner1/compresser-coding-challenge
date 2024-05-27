@@ -35,30 +35,34 @@ def main(input):
    build_binary_tree(character_map)
 
 class leaf: 
-   def __init__(self, character, frequency, isleaf):
+   def __init__(self, character, frequency, isleaf, isroot):
       self.character = character
       self.frequency = frequency 
       self.isleaf = isleaf
+      self.isroot = isroot
 
-   def returnCharacter(): 
+   def returnCharacter(self): 
       return self.character 
 
-   def returnWeight(): 
-      return frequency
+   def returnWeight(self): 
+      return self.frequency
 
-   def ifIsLeaf(): 
-      return isleaf
+   def ifIsLeaf(self): 
+      return self.isleaf
 
-   def assignLeftChild(node): 
+   def ifIsRoot(self): 
+      return self.isroot
+
+   def assignLeftChild(self, node): 
       self.leftChild = node
    
-   def assignRightChild(node): 
+   def assignRightChild(self, node): 
       self.rightChild = node
 
-   def returnLeftChild(): 
+   def returnLeftChild(self): 
       return self.leftChild
    
-   def returnRightChild(): 
+   def returnRightChild(self): 
       return self.rightChild
 
 
@@ -69,7 +73,14 @@ class leaf:
 
 
 def build_binary_tree(character_map): 
-   #TODO 
-   return
-# Call main on command line input 
+   leaf1 = leaf("c", 12, False, True)
+   leaf2 = leaf("a", 7, True, False)
+   leaf3 = leaf("b", 22, True, False)
+   print(leaf1.character)
+   print(leaf1.frequency)
+   print(leaf1.isroot)
+   leaf1.assignLeftChild(leaf2)
+   leaf1.assignRightChild(leaf3)
+   print(leaf1.leftChild)
+   print(leaf1.rightChild)
 main(sys)
