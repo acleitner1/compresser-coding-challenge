@@ -65,19 +65,49 @@ class leaf:
    def returnRightChild(self): 
       return self.rightChild
 
+class PrioirityQueue(): 
+   def __init__(self): 
+      self.queue = []
+
+   def isEmpty(self): 
+      if len(self.queue) != 0: 
+         return False
+      return True
+
+   def insert(self, newLeaf): 
+      self.queue.append(newLeaf)    
+
+   def delete(self): 
+      #index of max_val
+      max_val = 0
+      for i in range(len(self.queue)): 
+         if self.queue[i].frequency > self.queue[max_val].frequency: 
+            max_val = i 
+      item = self.queue[max_val]
+      del self.queue[max_val]
+      return item
+
+   def size(self): 
+      return len(self.queue)   
+
+
+           
+
 def build_leaf_list(character_map): 
-   leaf_list = []
-   while (len(character_map) > 1): 
+   leaf_list = PrioirityQueue()
+   while (len(character_map) > 0): 
       pair = character_map.popitem()
       leaf1 = leaf(pair[0], pair[1], True, False)
-      leaf_list.append(leaf1)
+      leaf_list.insert(leaf1)
+   
+
 
    return leaf_list
 
 def build_binary_tree(leaf_list): 
    root = leaf("", 0, True, False)
-   while(len(leaf_list) > 1): 
-      print(leaf_list[len(leaf_list) - 1]) 
-      leaf_list.pop()
+   # while(len(leaf_list) > 1): 
+   #    print(leaf_list[len(leaf_list) - 1]) 
+   #    leaf_list.delete()
       
 main(sys)
