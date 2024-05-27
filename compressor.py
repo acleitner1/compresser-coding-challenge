@@ -34,6 +34,39 @@ def main(input):
    f.close()
    build_binary_tree(character_map)
 
+class leaf: 
+   def __init__(self, character, frequency, isleaf):
+      self.character = character
+      self.frequency = frequency 
+      self.isleaf = isleaf
+
+   def returnCharacter(): 
+      return self.character 
+
+   def returnWeight(): 
+      return frequency
+
+   def ifIsLeaf(): 
+      return isleaf
+
+   def assignLeftChild(node): 
+      self.leftChild = node
+   
+   def assignRightChild(node): 
+      self.rightChild = node
+
+   def returnLeftChild(): 
+      return self.leftChild
+   
+   def returnRightChild(): 
+      return self.rightChild
+
+
+
+   
+   
+
+
 
 def build_binary_tree(character_map): 
    #TODO 
