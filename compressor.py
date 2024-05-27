@@ -4,9 +4,7 @@ import sys, os
 
 #Todo: 
 # 1. Build binary tree 
-#->-> Put the leaf objects into a PQ organized by frequency 
-#->-> remove the two trees with the lowest weights 
-#->-> create a new tree (weight sum of children) with those two trees as children and continue until all trees have been combined into one 
+#->-> Test the binary tree
 # 2. Generate prefix codes based on binary tree 
 # 3. Header section for output file
 # 4. Encode text using code table and write it to output file 
@@ -99,12 +97,12 @@ class PriorityQueue():
 
    def delete(self): 
       #index of max_val
-      max_val = 0
+      min_val = 0
       for i in range(len(self.queue)): 
-         if self.queue[i].weight > self.queue[max_val].weight:
-            max_val = i 
-      item = self.queue[max_val]
-      del self.queue[max_val]
+         if self.queue[i].weight < self.queue[min_val].weight:
+            min_val = i 
+      item = self.queue[min_val]
+      del self.queue[min_val]
       return item
 
    def size(self): 
@@ -125,6 +123,27 @@ def build_binary_tree(tree_list):
       tree2 = tree_list.delete()
       tree3 = letterTree("", tree1.weight+tree2.weight, False, tree1, tree2)
       tree_list.insert(tree3)
+   #unit test 
+   tree1 = letterTree("E", 120, True, None, None)
+   tree2 = letterTree("U", 37, True, None, None)
+   tree3 = letterTree("D", 42, True, None, None)
+   tree4 = letterTree("L", 42, True, None, None)
+   tree5 = letterTree("C", 32, True, None, None)
+   tree6 = letterTree("Z", 2, True, None, None)
+   tree7 = letterTree("K", 7, True, None, None)
+   tree8 = letterTree("M", 24, True, None, None)
+   tree_test = PriorityQueue()
+   tree_test.insert(tree1)
+   tree_test.insert(tree2)
+   tree_test.insert(tree3)
+   tree_test.insert(tree4)
+   tree_test.insert(tree5)
+   tree_test.insert(tree6)
+   tree_test.insert(tree7)
+   tree_test.insert(tree8)
+   while (tree_test.size()): 
+      print(tree_test.delete().weight)
+
    return tree3
       
 main(sys)
