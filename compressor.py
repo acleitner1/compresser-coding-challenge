@@ -3,8 +3,6 @@
 import sys, os
 
 #Todo: 
-# 1. Build binary tree 
-#->-> Test the binary tree
 # 2. Generate prefix codes based on binary tree 
 # 3. Header section for output file
 # 4. Encode text using code table and write it to output file 
