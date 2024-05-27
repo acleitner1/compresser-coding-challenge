@@ -11,6 +11,9 @@ import sys, os
 # 6. Decode the text and write it to specified output file.
 #     -> If this works, should be able to take a file, encode it, check that the new file is smaller 
 #        than the original, then decode that file into a file identical to the original. 
+
+lookup_table_codes = {}
+
 def main(input): 
    # Main function: It has been a long time since I did anything in python....
    if len(input.argv) != 2: 
@@ -29,7 +32,10 @@ def main(input):
    #build priority queue
    tree_list = build_tree_list(character_map)
    tree_tree = build_binary_tree(tree_list)
-   print(tree_tree.weight)
+   assign_codes(tree_tree)
+
+   lookup_table_codes
+  
 
 class letterNode: 
    def __init__(self, character, frequency, isLeaf, leftChild, rightChild):
@@ -124,12 +130,30 @@ def build_binary_tree(tree_list):
       tree2 = tree_list.delete()
       tree3 = letterTree("", tree1.weight+tree2.weight, False, tree1, tree2)
       tree_list.insert(tree3)
-   
    return tree3
+
+def assign_codes(tree): 
+   # This should be a recursive function, or call one 
+   #Concept: Traverse the tree: each left child is a zero. Each right child is one
+   # The issue: How to traverse the tree??? 
+   assign(tree.leftChild, "0")
+   assign(tree.rightChild, "1")
+   print("tree assigned")
+   
+
+def assign(tree, val): 
+   if (tree.isleaf is True): 
+      if (not tree in lookup_table_codes): 
+         lookup_table_codes[tree] = val
+   else: 
+      assign(tree.leftChild, val+"0")
+      assign(tree.rightChild, val+"1")
+
+
       
 main(sys)
 
-#unit test 
+# unit test 
 # tree1 = letterTree("E", 120, True, None, None)
 # tree2 = letterTree("U", 37, True, None, None)
 # tree3 = letterTree("D", 42, True, None, None)
@@ -148,16 +172,8 @@ main(sys)
 # tree_test.insert(tree7)
 # tree_test.insert(tree8)
 # root = build_binary_tree(tree_test)
-# printed = 0
-# while((not root.leftChild.isleaf or not root.rightChild.isleaf) and printed < 20): 
-#    print("Root value: %s, value + %d, left child: %s, and right child: %s", root.element, root.weight, root.leftChild.element, root.rightChild.element)
-#    og_root = root
-#    while (not root.leftChild.isleaf): 
-#       root = root.leftChild
-#       print("Root value: %s, value + %d, left child: %s, and right child: %s", root.element, root.weight, root.leftChild.element, root.rightChild.element)
-#    root = og_root
-#    while (not root.rightChild.isleaf): 
-#       root = root.rightChild
-#       print("Root value: %s, value + %d, left child: %s, and right child: %s", root.element, root.weight, root.leftChild.element, root.rightChild.element)
+# assign_codes(root)
 
-   printed +=1 
+# print(lookup_table_codes.keys())
+# for key in lookup_table_codes.keys(): 
+#    print(key.element + " and " + lookup_table_codes[key])
