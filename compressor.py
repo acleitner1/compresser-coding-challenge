@@ -31,15 +31,16 @@ def main(input):
             character_map[character] = 1 
    f.close()
    #build priority queue
-   leaf_list = build_leaf_list(character_map)
-   build_binary_tree(leaf_list)
+   tree_list = build_tree_list(character_map)
+   build_binary_tree(tree_list)
 
-class leaf: 
-   def __init__(self, character, frequency, isleaf, isroot):
+class letterNode: 
+   def __init__(self, character, frequency, isLeaf, leftChild, rightChild):
       self.character = character
       self.frequency = frequency 
-      self.isleaf = isleaf
-      self.isroot = isroot
+      self.isleaf = isLeaf
+      self.leftChild = leftChild
+      self.rightChild = rightChild
 
    def returnCharacter(self): 
       return self.character 
@@ -49,9 +50,6 @@ class leaf:
 
    def ifIsLeaf(self): 
       return self.isleaf
-
-   def ifIsRoot(self): 
-      return self.isroot
 
    def assignLeftChild(self, node): 
       self.leftChild = node
@@ -64,6 +62,20 @@ class leaf:
    
    def returnRightChild(self): 
       return self.rightChild
+
+class letterTree(): 
+   def __init__(self, element, weight, leaf, left, right): 
+      self.root = letterNode(element, weight, leaf, left, right)
+
+   def giveWeight(self): 
+      return self.weight
+
+   def compareTo(tree): 
+      if self.root.weight < tree.weight: 
+         return -1
+      elif self.root.weight == tree.weight: 
+         return 0
+      return 1
 
 class PrioirityQueue(): 
    def __init__(self): 
@@ -81,33 +93,29 @@ class PrioirityQueue():
       #index of max_val
       max_val = 0
       for i in range(len(self.queue)): 
-         if self.queue[i].frequency > self.queue[max_val].frequency: 
+         if self.queue[i] > self.queue[max_val].frequency: 
             max_val = i 
       item = self.queue[max_val]
       del self.queue[max_val]
       return item
 
    def size(self): 
-      return len(self.queue)   
+      return len(self.queue)              
 
-
-           
-
-def build_leaf_list(character_map): 
-   leaf_list = PrioirityQueue()
+def build_tree_list(character_map): 
+   tree_list = PrioirityQueue()
    while (len(character_map) > 0): 
       pair = character_map.popitem()
-      leaf1 = leaf(pair[0], pair[1], True, False)
-      leaf_list.insert(leaf1)
-   
-
-
-   return leaf_list
+      tree1 = letterTree(pair[0], pair[1], True, None, None)
+      tree_list.insert(tree1)
+   return tree_list
 
 def build_binary_tree(leaf_list): 
-   root = leaf("", 0, True, False)
-   # while(len(leaf_list) > 1): 
-   #    print(leaf_list[len(leaf_list) - 1]) 
-   #    leaf_list.delete()
+   return
+   # root = leaf("", 0, True, False)
+   # while(leaf_list.size() > 1): 
+   #    leaf1 = leaf_list.delete()
+   #    leaf2 = leaf_list.delete()
+   #    leaf3 = leaf()
       
 main(sys)
