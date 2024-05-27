@@ -67,6 +67,9 @@ class letterTree():
       self.root = letterNode(element, weight, leaf, left, right)
       self.weight = weight
       self.element = element
+      self.leftChild = left
+      self.rightChild = right
+      self.isleaf = leaf
 
    def giveWeight(self): 
       return self.weight
@@ -123,27 +126,40 @@ def build_binary_tree(tree_list):
       tree2 = tree_list.delete()
       tree3 = letterTree("", tree1.weight+tree2.weight, False, tree1, tree2)
       tree_list.insert(tree3)
-   #unit test 
-   tree1 = letterTree("E", 120, True, None, None)
-   tree2 = letterTree("U", 37, True, None, None)
-   tree3 = letterTree("D", 42, True, None, None)
-   tree4 = letterTree("L", 42, True, None, None)
-   tree5 = letterTree("C", 32, True, None, None)
-   tree6 = letterTree("Z", 2, True, None, None)
-   tree7 = letterTree("K", 7, True, None, None)
-   tree8 = letterTree("M", 24, True, None, None)
-   tree_test = PriorityQueue()
-   tree_test.insert(tree1)
-   tree_test.insert(tree2)
-   tree_test.insert(tree3)
-   tree_test.insert(tree4)
-   tree_test.insert(tree5)
-   tree_test.insert(tree6)
-   tree_test.insert(tree7)
-   tree_test.insert(tree8)
-   while (tree_test.size()): 
-      print(tree_test.delete().weight)
-
+   
    return tree3
       
 main(sys)
+
+#unit test 
+# tree1 = letterTree("E", 120, True, None, None)
+# tree2 = letterTree("U", 37, True, None, None)
+# tree3 = letterTree("D", 42, True, None, None)
+# tree4 = letterTree("L", 42, True, None, None)
+# tree5 = letterTree("C", 32, True, None, None)
+# tree6 = letterTree("Z", 2, True, None, None)
+# tree7 = letterTree("K", 7, True, None, None)
+# tree8 = letterTree("M", 24, True, None, None)
+# tree_test = PriorityQueue()
+# tree_test.insert(tree1)
+# tree_test.insert(tree2)
+# tree_test.insert(tree3)
+# tree_test.insert(tree4)
+# tree_test.insert(tree5)
+# tree_test.insert(tree6)
+# tree_test.insert(tree7)
+# tree_test.insert(tree8)
+# root = build_binary_tree(tree_test)
+# printed = 0
+# while((not root.leftChild.isleaf or not root.rightChild.isleaf) and printed < 20): 
+#    print("Root value: %s, value + %d, left child: %s, and right child: %s", root.element, root.weight, root.leftChild.element, root.rightChild.element)
+#    og_root = root
+#    while (not root.leftChild.isleaf): 
+#       root = root.leftChild
+#       print("Root value: %s, value + %d, left child: %s, and right child: %s", root.element, root.weight, root.leftChild.element, root.rightChild.element)
+#    root = og_root
+#    while (not root.rightChild.isleaf): 
+#       root = root.rightChild
+#       print("Root value: %s, value + %d, left child: %s, and right child: %s", root.element, root.weight, root.leftChild.element, root.rightChild.element)
+
+   printed +=1 
