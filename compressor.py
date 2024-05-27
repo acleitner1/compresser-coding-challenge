@@ -4,8 +4,6 @@ import sys, os
 
 #Todo: 
 # 1. Build binary tree 
-# -> Define leaf objects AND also a root that points to the first two leaves
-#-> -> Each leaf object should contain a letter and its frequency, and right adn left children 
 #->-> Put the leaf objects into a PQ organized by frequency 
 #->-> remove the two trees with the lowest weights 
 #->-> create a new tree (weight sum of children) with those two trees as children and continue until all trees have been combined into one 
@@ -32,7 +30,9 @@ def main(input):
          else: 
             character_map[character] = 1 
    f.close()
-   build_binary_tree(character_map)
+   #build priority queue
+   leaf_list = build_leaf_list(character_map)
+   build_binary_tree(leaf_list)
 
 class leaf: 
    def __init__(self, character, frequency, isleaf, isroot):
@@ -65,22 +65,19 @@ class leaf:
    def returnRightChild(self): 
       return self.rightChild
 
+def build_leaf_list(character_map): 
+   leaf_list = []
+   while (len(character_map) > 1): 
+      pair = character_map.popitem()
+      leaf1 = leaf(pair[0], pair[1], True, False)
+      leaf_list.append(leaf1)
 
+   return leaf_list
 
-   
-   
-
-
-
-def build_binary_tree(character_map): 
-   leaf1 = leaf("c", 12, False, True)
-   leaf2 = leaf("a", 7, True, False)
-   leaf3 = leaf("b", 22, True, False)
-   print(leaf1.character)
-   print(leaf1.frequency)
-   print(leaf1.isroot)
-   leaf1.assignLeftChild(leaf2)
-   leaf1.assignRightChild(leaf3)
-   print(leaf1.leftChild)
-   print(leaf1.rightChild)
+def build_binary_tree(leaf_list): 
+   root = leaf("", 0, True, False)
+   while(len(leaf_list) > 1): 
+      print(leaf_list[len(leaf_list) - 1]) 
+      leaf_list.pop()
+      
 main(sys)
