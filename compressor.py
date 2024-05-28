@@ -3,7 +3,6 @@
 import sys, os
 
 #Todo: 
-# 3. Header section for output file
 # 4. Encode text using code table and write it to output file 
 #     -> Be sure to translate prefixes into bit string and pack into bytes to achieve compression 
 # 5. Read header and rebuild prefix table 
@@ -34,16 +33,18 @@ def main(input):
 
    #build binary tree 
    tree_tree = build_binary_tree(tree_list)
-   #assign codes 
+
    output_file = file + "output.txt"
    if len(input.argv) > 2: 
       output_file = input.argv[2]
    
+   # Assigns codes and writes them to the above output file
    assign_codes(tree_tree, output_file)
 
-   # Build 
+   #Write the compressed into the output file 
 
-   lookup_table_codes
+
+
   
 
 class letterNode: 
@@ -148,7 +149,7 @@ def assign_codes(tree, file):
    f = open(file, "w")
    # after assigning codes to the children, we should write out that info to a file
    for key in lookup_table_codes.keys(): 
-      f.write(lookup_table_codes[key]+ ":" + key.element + "\n")
+      f.write(lookup_table_codes[key]+ ":" + key + "\n")
    f.write ("******************************")
    f.close()
 
@@ -158,7 +159,7 @@ def assign_codes(tree, file):
 def assign(tree, val): 
    if (tree.isleaf is True): 
       if (not tree in lookup_table_codes): 
-         lookup_table_codes[tree] = val
+         lookup_table_codes[tree.element] = val
    else: 
       assign(tree.leftChild, val+"0")
       assign(tree.rightChild, val+"1")
