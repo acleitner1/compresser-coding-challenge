@@ -3,7 +3,6 @@
 import sys, os
 
 #Todo: 
-# 2. Generate prefix codes based on binary tree 
 # 3. Header section for output file
 # 4. Encode text using code table and write it to output file 
 #     -> Be sure to translate prefixes into bit string and pack into bytes to achieve compression 
@@ -14,10 +13,11 @@ import sys, os
 
 lookup_table_codes = {}
 
+
 def main(input): 
    # Main function: It has been a long time since I did anything in python....
-   if len(input.argv) != 2: 
-      raise Exception("Must include 1 and only 1 file")
+   if len(input.argv) < 2: 
+      raise Exception("Must include at least a file to read ")
    file = input.argv[1] 
    f = open(file, "r") 
    character_map = {}
@@ -31,8 +31,17 @@ def main(input):
    f.close()
    #build priority queue
    tree_list = build_tree_list(character_map)
+
+   #build binary tree 
    tree_tree = build_binary_tree(tree_list)
-   assign_codes(tree_tree)
+   #assign codes 
+   output_file = file + "output.txt"
+   if len(input.argv) > 2: 
+      output_file = input.argv[2]
+   
+   assign_codes(tree_tree, output_file)
+
+   # Build 
 
    lookup_table_codes
   
@@ -132,13 +141,18 @@ def build_binary_tree(tree_list):
       tree_list.insert(tree3)
    return tree3
 
-def assign_codes(tree): 
-   # This should be a recursive function, or call one 
-   #Concept: Traverse the tree: each left child is a zero. Each right child is one
-   # The issue: How to traverse the tree??? 
+def assign_codes(tree, file): 
+   
    assign(tree.leftChild, "0")
    assign(tree.rightChild, "1")
-   print("tree assigned")
+   f = open(file, "w")
+   # after assigning codes to the children, we should write out that info to a file
+   for key in lookup_table_codes.keys(): 
+      f.write(lookup_table_codes[key]+ ":" + key.element + "\n")
+   f.write ("******************************")
+   f.close()
+
+
    
 
 def assign(tree, val): 
