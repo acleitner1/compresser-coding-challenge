@@ -42,6 +42,7 @@ def main(input):
    assign_codes(tree_tree, output_file)
 
    #Write the compressed into the output file 
+   write_compressed_file(file, output_file)
 
 
 
@@ -164,6 +165,20 @@ def assign(tree, val):
       assign(tree.leftChild, val+"0")
       assign(tree.rightChild, val+"1")
 
+def write_compressed_file(input_file, output_file): 
+   f = open(input_file, "r")
+   j = open(output_file, "a")
+   bits = []
+   for line in f: 
+      for character in line: 
+         bits.append(lookup_table_codes[character])
+
+   #This gives us the bitstring, which now must be broken into bytes 
+   towrite = bits.to_bytes()
+   print(towrite) 
+   # j.write(towrite)
+   # f.close()
+   # j.close()
 
       
 main(sys)
