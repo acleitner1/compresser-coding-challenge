@@ -72,6 +72,12 @@ def main(input):
                else: 
                   key+= str(character)
             lookup_table_codes[key] = val
+         # now we have the map
+         elif (not map): 
+            decoded = bin(int.from_bytes(line, byteorder="big"))
+            decoded = str(decoded)
+            
+
       f.close()
    else: 
       print("Second argument must be either: e, to compress the preceding file or d to decode the preceding file")
