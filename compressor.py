@@ -18,9 +18,9 @@ def main(input):
    if len(input.argv) < 3: 
       raise Exception("Must include at least a file to read and if file should be compressed or decompressed")
    file = input.argv[1] 
-   f = open(file, "r") 
    # we want to encode the file
    if (input.argv[2] == "e"): 
+      f = open(file, "r") 
       character_map = {}
       # Read file and note the occurence of each character 
       for line in f: 
@@ -45,9 +45,38 @@ def main(input):
 
       #Write the compressed into the output file 
       write_compressed_file(file, output_file)
+
    # we want to decode the file
    elif input.argv[2] == "d": 
       print("decoding")
+      f = open(file, "rb")
+      character_map = {}
+      map = 1
+      # Read file and note the occurence of each character 
+      for line in f: 
+         check_line = str(line)
+         if (check_line.find("******************************") != -1): 
+            map = 0
+         if (map): 
+            decoded = line.decode('utf8')
+            character_bool = 0
+            key = ""
+            val = ""
+            for character in decoded: 
+               if (character_bool and character  == "\n"): 
+                  continue
+               if (character == ':'): 
+                  character_bool = 1
+               elif (character_bool): 
+                  val+= character
+               else: 
+                  key+= str(character)
+            lookup_table_codes[key] = val
+      #check lookup table 
+      for key in lookup_table_codes.keys(): 
+         print(key + " and " + lookup_table_codes[key])
+
+      f.close()
    else: 
       print("Second argument must be either: e, to compress the preceding file or d to decode the preceding file")
 
@@ -158,8 +187,8 @@ def assign_codes(tree, file):
    f = open(file, "w")
    # after assigning codes to the children, we should write out that info to a file
    for key in lookup_table_codes.keys(): 
-      f.write(lookup_table_codes[key]+ ":" + key + "\n")
-   f.write ("******************************")
+      f.write(lookup_table_codes[key] + ":" + key+"\n")
+   f.write ("******************************\n")
    f.close()
 
 
@@ -216,6 +245,7 @@ def write_compressed_file(input_file, output_file):
 
       
 main(sys)
+lookup_table_codes.clear()
 
 # unit test 
 # tree1 = letterTree("E", 120, True, None, None)
