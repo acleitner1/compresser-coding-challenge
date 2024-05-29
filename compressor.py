@@ -83,8 +83,9 @@ def main(input):
          elif (not map): 
             #issue: Missing a zero at the end of lines 
 
-            # line 0 is the byte
-            decoded = bin(int.from_bytes(line, byteorder="big"))
+            # This drops leading zeroes because its an integer
+            # decoded = bin(line)
+            # decoded = bin(int.from_bytes(line, byteorder="big"))
             decoded = str(decoded)
             print(len(decoded))
             if (decoded[0:2] == "0b"): 
@@ -251,9 +252,9 @@ def write_compressed_file(input_file, output_file):
          if (character == "\n"): 
             character = "newline"
          bits = lookup_table_codes[character]
-         if (character == "I" or character == "f" or character == " "): 
-            print("checking this situation: " + character)
-            print(counter)
+         # if (character == "I" or character == "f" or character == " "): 
+         #    print("checking this situation: " + character)
+         #    print(counter)
          if ((counter + len(bits)) <= 8): 
             byte+= bits
             counter+= len(bits)
@@ -265,10 +266,10 @@ def write_compressed_file(input_file, output_file):
                bits = bits[1:]
                counter+=1
                if (counter == 8): 
-                  if (character == "I" or character == "f" or character == " "): 
-                     print(byte)
-                     print(bytes([int(byte, 2)]))
-                     print(bin(int.from_bytes(bytes([int(byte, 2)]), byteorder="big")))
+                  # if (character == "I" or character == "f" or character == " "): 
+                  #    print(byte)
+                  #    print(bytes([int(byte, 2)]))
+                  #    print(bin(int.from_bytes(bytes([int(byte, 2)]), byteorder="big")))
                   arr = bytes([int(byte, 2)])
                   j.write(arr)
                   counter = 0
@@ -278,10 +279,10 @@ def write_compressed_file(input_file, output_file):
             # for i in range(len(byte_list)): 
             #    byte_list[i] = int(byte_list[i])
             # print(byte_list)
-            if (character == "I" or character == "f" or character == " "): 
-               print(byte)
-               print(bytes([int(byte, 2)]))
-               print(bin(int.from_bytes(bytes([int(byte, 2)]), byteorder="big")))
+            # if (character == "I" or character == "f" or character == " "): 
+            #    print(byte)
+            #    print(bytes([int(byte, 2)]))
+            #    print(bin(int.from_bytes(bytes([int(byte, 2)]), byteorder="big")))
             arr = bytes([int(byte, 2)])
             j.write(arr)
             counter = 0 
