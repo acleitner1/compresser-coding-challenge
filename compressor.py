@@ -71,7 +71,7 @@ def main(input):
             for character in decoded: 
                if (character_bool and character  == "\n"): 
                   continue
-               if (character == ':'): 
+               if (character == ':' and not character_bool): 
                   character_bool = 1
                elif (character_bool): 
                   val+= character
