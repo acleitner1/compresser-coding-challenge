@@ -1,6 +1,6 @@
 #Compressor 
 # Anna Leitner, May/June 2024
-import sys, os
+import sys, os, array
 
 #Todo: 
 # 4. Encode text using code table and write it to output file 
@@ -160,6 +160,7 @@ def assign_codes(tree, file):
 def assign(tree, val): 
    if (tree.isleaf is True): 
       if (not tree in lookup_table_codes): 
+         print(tree.element + " : " + val)
          lookup_table_codes[tree.element] = val
    else: 
       assign(tree.leftChild, val+"0")
@@ -167,15 +168,36 @@ def assign(tree, val):
 
 def write_compressed_file(input_file, output_file): 
    f = open(input_file, "r")
-   j = open(output_file, "a")
-   bits = []
+   j = open(output_file, "ab")
+   counter = 0
+   byte = ""
    for line in f: 
       for character in line: 
-         bits.append(lookup_table_codes[character])
+         bits = lookup_table_codes[character]
+         if ((counter + len(bits)) <= 8): 
+            byte+= bits
+            counter+= len(bits)
+         else:    
+            while (counter <= 8 and len(bits)): 
+               byte+= bits[0]
+               bits = bits[1:len(bits)]
+               counter+=1
+               if (counter == 8): 
+                  arr= bytes(byte, 'utf8')
+                  j.write(arr)
+                  counter = 0
+                  byte = ""
+         if (counter == 8): 
+            arr= bytes(byte, 'utf8')
+            j.write(arr)
+            counter = 0 
+            byte = ""
+
 
    #This gives us the bitstring, which now must be broken into bytes 
-   towrite = bits.to_bytes()
-   print(towrite) 
+   # bits = array.array('i', bits)
+   # towrite = bits.to_bytes()
+   # print(towrite) 
    # j.write(towrite)
    # f.close()
    # j.close()
