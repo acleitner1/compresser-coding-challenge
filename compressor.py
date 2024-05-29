@@ -81,17 +81,13 @@ def main(input):
 
          # now we have the map
          elif (not map): 
-            # line 0 is the byte
-            # while (len(line)): 
-               # This is the first byte
-               # binary = bin(line[0])
-               # line = line[1:]
-               # print(binary)
+            #issue: Missing a zero at the end of lines 
 
             # line 0 is the byte
             decoded = bin(int.from_bytes(line, byteorder="big"))
             decoded = str(decoded)
             print(decoded)
+            decoded+= "0"
             if (decoded[0:2] == "0b"): 
                decoded = decoded[2:]
             while (prefix not in lookup_table_codes and len(decoded)): 
@@ -299,6 +295,10 @@ def write_compressed_file(input_file, output_file):
 
       
 main(sys)
+print(check) 
+f = open(test.txt, "r") 
+j = open(output.txtoutput.txt, "r")
+
 lookup_table_codes.clear()
 
 # unit test 
