@@ -36,7 +36,7 @@ def main(input):
       #build binary tree 
       tree_tree = build_binary_tree(tree_list)
 
-      output_file = file + "output.txt"
+      output_file = file + ".output.txt"
       if len(input.argv) > 3: 
          output_file = input.argv[3]
       
@@ -239,19 +239,27 @@ def write_compressed_file(input_file, output_file):
    counter = 0
    byte = ""
    for line in f: 
+      #I think the issue happens when we write things with long prefixes...
       for character in line: 
          if (character == "\n"): 
             character = "newline"
          bits = lookup_table_codes[character]
+         if (character == "I" or character == "f"): 
+            print("checking this situation: " + character)
+            print(counter)
          if ((counter + len(bits)) <= 8): 
             byte+= bits
             counter+= len(bits)
          else:    
             while (counter <= 8 and len(bits)): 
                byte+= bits[0]
-               bits = bits[1:len(bits)]
+               bits = bits[1:]
                counter+=1
                if (counter == 8): 
+                  if (character == "I"): 
+                     print(byte)
+                  if (character == "f"): 
+                     print(byte)
                   arr = bytes([int(byte, 2)])
                   j.write(arr)
                   counter = 0
@@ -261,6 +269,10 @@ def write_compressed_file(input_file, output_file):
             # for i in range(len(byte_list)): 
             #    byte_list[i] = int(byte_list[i])
             # print(byte_list)
+            if (character == "I"): 
+               print(byte)
+            if (character == "f"): 
+               print(byte)
             arr = bytes([int(byte, 2)])
             j.write(arr)
             counter = 0 
