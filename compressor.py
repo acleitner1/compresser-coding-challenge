@@ -85,11 +85,17 @@ def main(input):
 
             # This drops leading zeroes because its an integer
             # decoded = bin(line)
-            # decoded = bin(int.from_bytes(line, byteorder="big"))
+            decoded = bin(int.from_bytes(line, byteorder="big"))
             decoded = str(decoded)
-            print(len(decoded))
             if (decoded[0:2] == "0b"): 
                decoded = decoded[2:]
+            # print(len(decoded))
+            # print(len(decoded) % 8)
+            # Add back the leading 0 
+            while ((len(decoded) % 8) != 0): 
+               decoded = "0" + decoded
+               # print(decoded)
+               # print(len(decoded))
             while (prefix not in lookup_table_codes and len(decoded)): 
                prefix+=decoded[0]
                decoded = decoded[1:]
