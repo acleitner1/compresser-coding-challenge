@@ -160,7 +160,7 @@ def assign_codes(tree, file):
 def assign(tree, val): 
    if (tree.isleaf is True): 
       if (not tree in lookup_table_codes): 
-         print(tree.element + " : " + val)
+         #(tree.element + " : " + val)
          lookup_table_codes[tree.element] = val
    else: 
       assign(tree.leftChild, val+"0")
@@ -183,13 +183,16 @@ def write_compressed_file(input_file, output_file):
                bits = bits[1:len(bits)]
                counter+=1
                if (counter == 8): 
-                  arr= pack(byte, 'utf8')
+                  arr = bytes([int(byte, 2)])
                   j.write(arr)
                   counter = 0
                   byte = ""
          if (counter == 8): 
-            arr= bytes(int(byte), 'utf8')
-            print(arr)
+            # byte_list = list(byte)
+            # for i in range(len(byte_list)): 
+            #    byte_list[i] = int(byte_list[i])
+            # print(byte_list)
+            arr = bytes([int(byte, 2)])
             j.write(arr)
             counter = 0 
             byte = ""
