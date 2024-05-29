@@ -86,8 +86,7 @@ def main(input):
             # line 0 is the byte
             decoded = bin(int.from_bytes(line, byteorder="big"))
             decoded = str(decoded)
-            print(decoded)
-            decoded+= "0"
+            print(len(decoded))
             if (decoded[0:2] == "0b"): 
                decoded = decoded[2:]
             while (prefix not in lookup_table_codes and len(decoded)): 
@@ -97,14 +96,14 @@ def main(input):
                   if (lookup_table_codes[prefix] == "newline"): 
                      j.write("\n")
                   else: 
-                     print("prefix: " + prefix + " " + lookup_table_codes[prefix])
+                     #print("prefix: " + prefix + " " + lookup_table_codes[prefix])
                      j.write(lookup_table_codes[prefix])
                   prefix = ""
             if (prefix in lookup_table_codes): 
                   if (lookup_table_codes[prefix] == "newline"): 
                      j.write("\n")
                   else: 
-                     print("prefix: " + prefix + " " + lookup_table_codes[prefix])
+                     #print("prefix: " + prefix + " " + lookup_table_codes[prefix])
                      j.write(lookup_table_codes[prefix])
                   prefix = ""
             
@@ -258,8 +257,8 @@ def write_compressed_file(input_file, output_file):
          if ((counter + len(bits)) <= 8): 
             byte+= bits
             counter+= len(bits)
-            if (character == "I" or character == "f" or character == " "): 
-               print(byte)
+            # if (character == "I" or character == "f" or character == " "): 
+            #    print(byte)
          else:    
             while (counter <= 8 and len(bits)): 
                byte+= bits[0]
@@ -268,6 +267,8 @@ def write_compressed_file(input_file, output_file):
                if (counter == 8): 
                   if (character == "I" or character == "f" or character == " "): 
                      print(byte)
+                     print(bytes([int(byte, 2)]))
+                     print(bin(int.from_bytes(bytes([int(byte, 2)]), byteorder="big")))
                   arr = bytes([int(byte, 2)])
                   j.write(arr)
                   counter = 0
@@ -279,6 +280,8 @@ def write_compressed_file(input_file, output_file):
             # print(byte_list)
             if (character == "I" or character == "f" or character == " "): 
                print(byte)
+               print(bytes([int(byte, 2)]))
+               print(bin(int.from_bytes(bytes([int(byte, 2)]), byteorder="big")))
             arr = bytes([int(byte, 2)])
             j.write(arr)
             counter = 0 
@@ -295,9 +298,9 @@ def write_compressed_file(input_file, output_file):
 
       
 main(sys)
-print(check) 
-f = open(test.txt, "r") 
-j = open(output.txtoutput.txt, "r")
+# print(check) 
+# f = open(test.txt, "r") 
+# j = open(output.txtoutput.txt, "r")
 
 lookup_table_codes.clear()
 
