@@ -183,12 +183,13 @@ def write_compressed_file(input_file, output_file):
                bits = bits[1:len(bits)]
                counter+=1
                if (counter == 8): 
-                  arr= bytes(byte, 'utf8')
+                  arr= pack(byte, 'utf8')
                   j.write(arr)
                   counter = 0
                   byte = ""
          if (counter == 8): 
-            arr= bytes(byte, 'utf8')
+            arr= bytes(int(byte), 'utf8')
+            print(arr)
             j.write(arr)
             counter = 0 
             byte = ""
