@@ -244,21 +244,21 @@ def write_compressed_file(input_file, output_file):
          if (character == "\n"): 
             character = "newline"
          bits = lookup_table_codes[character]
-         if (character == "I" or character == "f"): 
+         if (character == "I" or character == "f" or character == " "): 
             print("checking this situation: " + character)
             print(counter)
          if ((counter + len(bits)) <= 8): 
             byte+= bits
             counter+= len(bits)
+            if (character == "I" or character == "f" or character == " "): 
+               print(byte)
          else:    
             while (counter <= 8 and len(bits)): 
                byte+= bits[0]
                bits = bits[1:]
                counter+=1
                if (counter == 8): 
-                  if (character == "I"): 
-                     print(byte)
-                  if (character == "f"): 
+                  if (character == "I" or character == "f" or character == " "): 
                      print(byte)
                   arr = bytes([int(byte, 2)])
                   j.write(arr)
@@ -269,9 +269,7 @@ def write_compressed_file(input_file, output_file):
             # for i in range(len(byte_list)): 
             #    byte_list[i] = int(byte_list[i])
             # print(byte_list)
-            if (character == "I"): 
-               print(byte)
-            if (character == "f"): 
+            if (character == "I" or character == "f" or character == " "): 
                print(byte)
             arr = bytes([int(byte, 2)])
             j.write(arr)
