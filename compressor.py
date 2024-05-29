@@ -15,34 +15,42 @@ lookup_table_codes = {}
 
 def main(input): 
    # Main function: It has been a long time since I did anything in python....
-   if len(input.argv) < 2: 
-      raise Exception("Must include at least a file to read ")
+   if len(input.argv) < 3: 
+      raise Exception("Must include at least a file to read and if file should be compressed or decompressed")
    file = input.argv[1] 
    f = open(file, "r") 
-   character_map = {}
-   # Read file and note the occurence of each character 
-   for line in f: 
-      for character in line: 
-         if character in character_map: 
-            character_map[character] = character_map[character]+ 1 
-         else: 
-            character_map[character] = 1 
-   f.close()
-   #build priority queue
-   tree_list = build_tree_list(character_map)
+   # we want to encode the file
+   if (input.argv[2] == "e"): 
+      character_map = {}
+      # Read file and note the occurence of each character 
+      for line in f: 
+         for character in line: 
+            if character in character_map: 
+               character_map[character] = character_map[character]+ 1 
+            else: 
+               character_map[character] = 1 
+      f.close()
+      #build priority queue
+      tree_list = build_tree_list(character_map)
 
-   #build binary tree 
-   tree_tree = build_binary_tree(tree_list)
+      #build binary tree 
+      tree_tree = build_binary_tree(tree_list)
 
-   output_file = file + "output.txt"
-   if len(input.argv) > 2: 
-      output_file = input.argv[2]
-   
-   # Assigns codes and writes them to the above output file
-   assign_codes(tree_tree, output_file)
+      output_file = file + "output.txt"
+      if len(input.argv) > 3: 
+         output_file = input.argv[3]
+      
+      # Assigns codes and writes them to the above output file
+      assign_codes(tree_tree, output_file)
 
-   #Write the compressed into the output file 
-   write_compressed_file(file, output_file)
+      #Write the compressed into the output file 
+      write_compressed_file(file, output_file)
+   # we want to decode the file
+   elif input.argv[2] == "d": 
+      print("decoding")
+   else: 
+      print("Second argument must be either: e, to compress the preceding file or d to decode the preceding file")
+
 
 
 
