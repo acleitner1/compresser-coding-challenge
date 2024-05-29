@@ -48,15 +48,21 @@ def main(input):
 
    # we want to decode the file
    elif input.argv[2] == "d": 
-      print("decoding")
       f = open(file, "rb")
       character_map = {}
       map = 1
+      printer = 0 
+      prefix = ""
+      output_file = file + "output.txt"
+      if len(input.argv) > 3: 
+         output_file = input.argv[3]
+      j = open(output_file, "w")
       # Read file and note the occurence of each character 
       for line in f: 
          check_line = str(line)
          if (check_line.find("******************************") != -1): 
             map = 0
+            continue
          if (map): 
             decoded = line.decode('utf8')
             character_bool = 0
@@ -76,6 +82,20 @@ def main(input):
          elif (not map): 
             decoded = bin(int.from_bytes(line, byteorder="big"))
             decoded = str(decoded)
+            if (decoded[0:2] == "0b"): 
+               decoded = decoded[2:]
+            while (prefix not in lookup_table_codes and len(decoded)): 
+               prefix+=decoded[0]
+               decoded = decoded[1:]
+               if (prefix in lookup_table_codes): 
+                  j.write(lookup_table_codes[prefix])
+                  prefix = ""
+            if (prefix in lookup_table_codes): 
+                  j.write(lookup_table_codes[prefix])
+                  prefix = ""
+            
+
+            #decoding will work because of prefix property!!! 
             
 
       f.close()
