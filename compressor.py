@@ -72,10 +72,6 @@ def main(input):
                else: 
                   key+= str(character)
             lookup_table_codes[key] = val
-      #check lookup table 
-      for key in lookup_table_codes.keys(): 
-         print(key + " and " + lookup_table_codes[key])
-
       f.close()
    else: 
       print("Second argument must be either: e, to compress the preceding file or d to decode the preceding file")
