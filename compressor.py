@@ -78,10 +78,20 @@ def main(input):
                else: 
                   key+= str(character) 
             lookup_table_codes[key] = val
+
          # now we have the map
          elif (not map): 
+            # line 0 is the byte
+            # while (len(line)): 
+               # This is the first byte
+               # binary = bin(line[0])
+               # line = line[1:]
+               # print(binary)
+
+            # line 0 is the byte
             decoded = bin(int.from_bytes(line, byteorder="big"))
             decoded = str(decoded)
+            print(decoded)
             if (decoded[0:2] == "0b"): 
                decoded = decoded[2:]
             while (prefix not in lookup_table_codes and len(decoded)): 
@@ -91,12 +101,14 @@ def main(input):
                   if (lookup_table_codes[prefix] == "newline"): 
                      j.write("\n")
                   else: 
+                     print("prefix: " + prefix + " " + lookup_table_codes[prefix])
                      j.write(lookup_table_codes[prefix])
                   prefix = ""
             if (prefix in lookup_table_codes): 
                   if (lookup_table_codes[prefix] == "newline"): 
                      j.write("\n")
                   else: 
+                     print("prefix: " + prefix + " " + lookup_table_codes[prefix])
                      j.write(lookup_table_codes[prefix])
                   prefix = ""
             
