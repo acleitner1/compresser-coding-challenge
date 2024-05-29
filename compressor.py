@@ -76,7 +76,7 @@ def main(input):
                elif (character_bool): 
                   val+= character
                else: 
-                  key+= str(character)
+                  key+= str(character) 
             lookup_table_codes[key] = val
          # now we have the map
          elif (not map): 
@@ -88,10 +88,16 @@ def main(input):
                prefix+=decoded[0]
                decoded = decoded[1:]
                if (prefix in lookup_table_codes): 
-                  j.write(lookup_table_codes[prefix])
+                  if (lookup_table_codes[prefix] == "newline"): 
+                     j.write("\n")
+                  else: 
+                     j.write(lookup_table_codes[prefix])
                   prefix = ""
             if (prefix in lookup_table_codes): 
-                  j.write(lookup_table_codes[prefix])
+                  if (lookup_table_codes[prefix] == "newline"): 
+                     j.write("\n")
+                  else: 
+                     j.write(lookup_table_codes[prefix])
                   prefix = ""
             
 
@@ -220,6 +226,8 @@ def assign(tree, val):
    if (tree.isleaf is True): 
       if (not tree in lookup_table_codes): 
          #(tree.element + " : " + val)
+         if (tree.element == "\n"): 
+            tree.element = "newline"
          lookup_table_codes[tree.element] = val
    else: 
       assign(tree.leftChild, val+"0")
@@ -232,6 +240,8 @@ def write_compressed_file(input_file, output_file):
    byte = ""
    for line in f: 
       for character in line: 
+         if (character == "\n"): 
+            character = "newline"
          bits = lookup_table_codes[character]
          if ((counter + len(bits)) <= 8): 
             byte+= bits
