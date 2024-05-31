@@ -1,27 +1,29 @@
 #Compressor 
 # Anna Leitner, May/June 2024
+# Provides options to compress and decompress files (Huffman Method)
+# In order to compress a file, simply call "python3 compressor.py" followed by the 
+# name of the file to be compressed and the letter "e," and, optionally, the name of a file 
+# to which to write the compressed output. 
+# TO Decompress a file, call "python3 compressor.py" folllowed by the name of the file to be 
+# decompressed, the letter "d," and, optionally, the name of a file to which to write the decompressed 
+# output. 
+
 import sys, os, array
 
-#Todo: 
-# 4. Encode text using code table and write it to output file 
-#     -> Be sure to translate prefixes into bit string and pack into bytes to achieve compression 
-# 5. Read header and rebuild prefix table 
-# 6. Decode the text and write it to specified output file.
-#     -> If this works, should be able to take a file, encode it, check that the new file is smaller 
-#        than the original, then decode that file into a file identical to the original. 
-
+# Global prefix to character dictionary
 lookup_table_codes = {}
 
 
 def main(input): 
-   # Main function: It has been a long time since I did anything in python....
    if len(input.argv) < 3: 
       raise Exception("Must include at least a file to read and if file should be compressed or decompressed")
    file = input.argv[1] 
-   # we want to encode the file
+
+   # Option to Encode File
    if (input.argv[2] == "e"): 
       f = open(file, "r") 
       character_map = {}
+
       # Read file and note the occurence of each character 
       for line in f: 
          for character in line: 
@@ -30,12 +32,14 @@ def main(input):
             else: 
                character_map[character] = 1 
       f.close()
-      #build priority queue
+
+      # Build priority queue
       tree_list = build_tree_list(character_map)
 
-      #build binary tree 
+      # Build binary tree 
       tree_tree = build_binary_tree(tree_list)
 
+      # Create output file if one doesn't already exist 
       output_file = file + ".output.txt"
       if len(input.argv) > 3: 
          output_file = input.argv[3]
@@ -46,7 +50,7 @@ def main(input):
       #Write the compressed into the output file 
       write_compressed_file(file, output_file)
 
-   # we want to decode the file
+   # Option to decode a compressed/encoded file 
    elif input.argv[2] == "d": 
       f = open(file, "rb")
       character_map = {}
@@ -54,31 +58,29 @@ def main(input):
       printer = 0 
       prefix = ""
       output_file = file + "output.txt"
+
       if len(input.argv) > 3: 
          output_file = input.argv[3]
       j = open(output_file, "w")
-      # Read file and note the occurence of each character 
+
+      # Read header to build character lookup table, then unpack 
+      # bytes into characters based on contents of the table
       for line in f: 
          check_line = str(line)
          if (check_line.find("******************************") != -1): 
             map = 0
             continue
+
+          # Build lookup table by reading file header
          if (map): 
             decoded = line.decode('utf8')
             character_bool = 0
             key = ""
             val = ""
-            for character in decoded: 
-               if (character_bool and character  == "\n"): 
-                  continue
-               if (character == ':' and not character_bool): 
-                  character_bool = 1
-               elif (character_bool): 
-                  val+= character
-               else: 
-                  key+= str(character) 
-            lookup_table_codes[key] = val
-
+            splitter = decoded.split(':')
+            val = splitter[1][:-1]
+            lookup_table_codes[splitter[0]] = val
+      
          # now we have the map
          elif (not map): 
             #issue: Missing a zero at the end of lines 
@@ -102,6 +104,8 @@ def main(input):
                if (prefix in lookup_table_codes): 
                   if (lookup_table_codes[prefix] == "newline"): 
                      j.write("\n")
+                  elif (lookup_table_codes[prefix] == "colon"): 
+                     j.write(":")
                   else: 
                      #print("prefix: " + prefix + " " + lookup_table_codes[prefix])
                      j.write(lookup_table_codes[prefix])
@@ -109,6 +113,8 @@ def main(input):
             if (prefix in lookup_table_codes): 
                   if (lookup_table_codes[prefix] == "newline"): 
                      j.write("\n")
+                  elif (lookup_table_codes[prefix] == "colon"): 
+                     j.write(":")
                   else: 
                      #print("prefix: " + prefix + " " + lookup_table_codes[prefix])
                      j.write(lookup_table_codes[prefix])
@@ -242,6 +248,8 @@ def assign(tree, val):
          #(tree.element + " : " + val)
          if (tree.element == "\n"): 
             tree.element = "newline"
+         if (tree.element == ":"): 
+            tree.element = "colon"
          lookup_table_codes[tree.element] = val
    else: 
       assign(tree.leftChild, val+"0")
@@ -257,6 +265,8 @@ def write_compressed_file(input_file, output_file):
       for character in line: 
          if (character == "\n"): 
             character = "newline"
+         if (character == ":"): 
+            character = "colon"
          bits = lookup_table_codes[character]
          # if (character == "I" or character == "f" or character == " "): 
          #    print("checking this situation: " + character)
@@ -305,33 +315,6 @@ def write_compressed_file(input_file, output_file):
 
       
 main(sys)
-# print(check) 
-# f = open(test.txt, "r") 
-# j = open(output.txtoutput.txt, "r")
 
 lookup_table_codes.clear()
 
-# unit test 
-# tree1 = letterTree("E", 120, True, None, None)
-# tree2 = letterTree("U", 37, True, None, None)
-# tree3 = letterTree("D", 42, True, None, None)
-# tree4 = letterTree("L", 42, True, None, None)
-# tree5 = letterTree("C", 32, True, None, None)
-# tree6 = letterTree("Z", 2, True, None, None)
-# tree7 = letterTree("K", 7, True, None, None)
-# tree8 = letterTree("M", 24, True, None, None)
-# tree_test = PriorityQueue()
-# tree_test.insert(tree1)
-# tree_test.insert(tree2)
-# tree_test.insert(tree3)
-# tree_test.insert(tree4)
-# tree_test.insert(tree5)
-# tree_test.insert(tree6)
-# tree_test.insert(tree7)
-# tree_test.insert(tree8)
-# root = build_binary_tree(tree_test)
-# assign_codes(root)
-
-# print(lookup_table_codes.keys())
-# for key in lookup_table_codes.keys(): 
-#    print(key.element + " and " + lookup_table_codes[key])
